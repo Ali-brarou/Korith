@@ -27,7 +27,7 @@ void pic_init(void)
     /* initilaztion sequence */ 
     outb(ICW1_INIT | ICW1_ICW4, PIC_MASTER_CMD); 
     io_wait(); 
-    outb(ICW1_INIT | ICW1_ICW4, PIC_MASTER_CMD); 
+    outb(ICW1_INIT | ICW1_ICW4, PIC_SLAVE_CMD); 
     io_wait(); 
     outb(IRQ0_VECTOR, PIC_MASTER_DATA); 
     io_wait(); 

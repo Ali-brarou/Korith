@@ -1,7 +1,12 @@
 #include <korith/idt.h> 
 #include <korith/entry.h> 
-#include <korith/i8259.h> 
+#include <korith/traps.h> 
+#include <korith/irq.h> 
+#include <korith/irq_vectors.h> 
 #include <korith/tty.h>
+
+extern void (*trap_entry_table[NR_TRAPS])(void); 
+extern void (*irq_entry_table[NR_IRQS])(void); 
 
 __attribute__((aligned(0x10)))
 static struct gate_desc idt_table[IDT_ENTRIES];  
@@ -12,38 +17,21 @@ static inline void lidt(void *p)
     asm volatile("lidt (%0)" :: "r"(p) : "memory"); 
 }
 
-void default_interrupt_handler(void)
-{
-    /* do nothing */ 
-    pic_send_eoi(0); 
-}
-
-const char scancode_map[] =
-"\0\0331234567890-=\b"    /* 0x00–0x0E */
-"\tqwertyuiop[]\n\0"      /* 0x0F–0x1C (0x1D = Ctrl, so \0) */
-"asdfghjkl;'`\0\\zxcvbnm,./\0*\0 \0"; /* 0x1E–0x39 etc. */
-
-
-void keyboard_wrapper(void); 
-void keyboard_handler(void)
-{
-    uint8_t scancode = inb(0x60); 
-    char buff[2] = {scancode_map[scancode], 0x0}; 
-    tty_write_string(buff); 
-    pic_send_eoi(0x21); 
-}
-
 void idt_init(void)
 { 
-    for (int i = 0; i < IDT_ENTRIES; i++)    
+    int i; 
+    for (i = 0; i < NR_TRAPS; i++)
     {
-        idt_set_entry(i, isr_wrapper, 0x08, 0x8E); 
+        idt_set_entry(i, trap_entry_table[i], 0x08, 0x8E); 
+    }
+    for (i = 0; i < NR_IRQS; i++)
+    {
+        idt_set_entry(i + IRQ0_VECTOR, irq_entry_table[i], 0x08, 0x8E); 
     }
     
-    idt_set_entry(0x21, keyboard_wrapper, 0x08, 0x8E); 
+    /* load idt */ 
     idt_descriptor.limit = sizeof(idt_table) - 1; 
     idt_descriptor.base = (uint32_t)&idt_table; 
-
     lidt(&idt_descriptor); 
 }
 

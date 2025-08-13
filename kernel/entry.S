@@ -4,57 +4,57 @@
 /* put the table in text section for security in non nx old cpus*/ 
 .section .text 
 .global trap_entry_table
+.global irq_entry_table
 
 /* cpu exceptions */ 
 .altmacro
-.macro TRAP_NOERRCODE num
+.macro BUILD_TRAP_NOERRCODE num
 trap\num: 
     push $0 /* dummy error code */ 
-    push num
-    jmp trap_common_entry
-    popal
+    push $\num
+    jmp trap_common
 .endm
 
-.macro TRAP_ERRCODE num 
+.macro BUILD_TRAP_ERRCODE num 
 trap\num: 
-    push num
-    jmp trap_common_entry
+    push $\num
+    jmp trap_common
 .endm
 
-TRAP_NOERRCODE 0
-TRAP_NOERRCODE 1
-TRAP_NOERRCODE 2
-TRAP_NOERRCODE 3
-TRAP_NOERRCODE 4
-TRAP_NOERRCODE 5
-TRAP_NOERRCODE 6
-TRAP_NOERRCODE 7
-TRAP_ERRCODE   8
-TRAP_NOERRCODE 9
-TRAP_ERRCODE   10
-TRAP_ERRCODE   11
-TRAP_ERRCODE   12
-TRAP_ERRCODE   13
-TRAP_ERRCODE   14
-TRAP_NOERRCODE 15
-TRAP_NOERRCODE 16
-TRAP_ERRCODE   17
-TRAP_NOERRCODE 18
-TRAP_NOERRCODE 19
-TRAP_NOERRCODE 20
-TRAP_ERRCODE   21
-TRAP_NOERRCODE 22
-TRAP_NOERRCODE 23
-TRAP_NOERRCODE 24
-TRAP_NOERRCODE 25
-TRAP_NOERRCODE 26
-TRAP_NOERRCODE 27
-TRAP_NOERRCODE 28
-TRAP_ERRCODE   29
-TRAP_ERRCODE   30
-TRAP_NOERRCODE 31
+BUILD_TRAP_NOERRCODE 0
+BUILD_TRAP_NOERRCODE 1
+BUILD_TRAP_NOERRCODE 2
+BUILD_TRAP_NOERRCODE 3
+BUILD_TRAP_NOERRCODE 4
+BUILD_TRAP_NOERRCODE 5
+BUILD_TRAP_NOERRCODE 6
+BUILD_TRAP_NOERRCODE 7
+BUILD_TRAP_ERRCODE   8
+BUILD_TRAP_NOERRCODE 9
+BUILD_TRAP_ERRCODE   10
+BUILD_TRAP_ERRCODE   11
+BUILD_TRAP_ERRCODE   12
+BUILD_TRAP_ERRCODE   13
+BUILD_TRAP_ERRCODE   14
+BUILD_TRAP_NOERRCODE 15
+BUILD_TRAP_NOERRCODE 16
+BUILD_TRAP_ERRCODE   17
+BUILD_TRAP_NOERRCODE 18
+BUILD_TRAP_NOERRCODE 19
+BUILD_TRAP_NOERRCODE 20
+BUILD_TRAP_ERRCODE   21
+BUILD_TRAP_NOERRCODE 22
+BUILD_TRAP_NOERRCODE 23
+BUILD_TRAP_NOERRCODE 24
+BUILD_TRAP_NOERRCODE 25
+BUILD_TRAP_NOERRCODE 26
+BUILD_TRAP_NOERRCODE 27
+BUILD_TRAP_NOERRCODE 28
+BUILD_TRAP_ERRCODE   29
+BUILD_TRAP_ERRCODE   30
+BUILD_TRAP_NOERRCODE 31
 
-trap_common_entry: 
+trap_common: 
     pushal
     cld
     call trap_handle 
@@ -74,19 +74,32 @@ trap_entry_table:
     .set i, i+1
 .endr 
 
-.global isr_wrapper
-.global keyboard_wrapper
-isr_wrapper: 
-    pushal
-    cld
-    call default_interrupt_handler
-    popal
-    iret
+.macro BUILD_IRQ num
+irq\num: 
+    push $\num
+    jmp irq_common
+.endm
 
-keyboard_wrapper: 
-    pushal
+irq_common: 
     cld
-    call keyboard_handler 
-    popal
-    iret
-    
+    call irq_handle
+    add $4, %esp
+    iret 
+
+.set i, 0
+.rept 16
+    BUILD_IRQ %i
+    .set i, i+1
+.endr 
+
+.macro insert_irq num
+    .long irq\num
+.endm
+
+.align 4
+irq_entry_table: 
+.set i, 0
+.rept 16
+    insert_irq %i 
+    .set i, i+1
+.endr

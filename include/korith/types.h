@@ -6,4 +6,12 @@
 #include <stdint.h> 
 #include <stdbool.h> 
 
+/* will be using a linked list design based on the Linux kernel */ 
+struct list_head {
+    struct list_head *next, *prev; 
+}; 
+
+struct cpu_regs {
+}; 
+
 #endif /* _KORITH_STDDEF_H_ */
