@@ -5,6 +5,7 @@
 #include <korith/irq.h> 
 #include <korith/cpu.h> 
 #include <korith/io.h> 
+#include <korith/timer.h> 
 
 static always_inline void kernel_init(void)
 {
@@ -12,6 +13,7 @@ static always_inline void kernel_init(void)
     tty_init();
     idt_init(); 
     irq_init(); 
+    timer_init(); 
 }
 
 static const char scancode_map[] =
@@ -21,9 +23,9 @@ static const char scancode_map[] =
 
 static void keyboard_handler(uint32_t irq)
 {
+    (void)irq; 
     uint8_t scancode = inb(0x60);
-    char buff[2] = {scancode_map[scancode], 0x0};
-    tty_write_string(buff);
+    tty_write(&scancode_map[scancode], 1); 
 }
 
 struct irq_action keyboard_action = {

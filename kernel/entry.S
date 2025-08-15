@@ -6,6 +6,14 @@
 .global trap_entry_table
 .global irq_entry_table
 
+.macro SAVE_ALL 
+    pushal
+.endm 
+
+.macro RESTORE_ALL 
+    popal
+.endm 
+
 /* cpu exceptions */ 
 .altmacro
 .macro BUILD_TRAP_NOERRCODE num
@@ -55,10 +63,10 @@ BUILD_TRAP_ERRCODE   30
 BUILD_TRAP_NOERRCODE 31
 
 trap_common: 
-    pushal
+    SAVE_ALL
     cld
     call trap_handle 
-    popal
+    RESTORE_ALL
     add $8, %esp
     iret
 

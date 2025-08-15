@@ -1,7 +1,7 @@
 #include <korith/irq.h> 
 #include <korith/assert.h> 
 #include <korith/list.h> 
-#include <korith/i8259.h> 
+#include <korith/pic.h> 
 #include <korith/tty.h> 
 
 struct irq_desc irq_desc[NR_IRQS]; 

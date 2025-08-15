@@ -12,6 +12,7 @@ struct list_head {
 }; 
 
 struct cpu_regs {
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; 
 }; 
 
 #endif /* _KORITH_STDDEF_H_ */

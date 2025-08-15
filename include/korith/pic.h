@@ -1,5 +1,5 @@
-#ifndef _KORITH_I8259_H_
-#define _KORITH_I8259_H_
+#ifndef _KORITH_PIC_H_
+#define _KORITH_PIC_H_
 
 #include <korith/types.h> 
 #include <korith/io.h> 

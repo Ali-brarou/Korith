@@ -1,4 +1,4 @@
-#include <korith/i8259.h> 
+#include <korith/pic.h> 
 #include <korith/irq.h> 
 #include <korith/irq_vectors.h> 
 
