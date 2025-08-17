@@ -1,13 +1,13 @@
 #include <korith/compiler.h> 
-#include <korith/assert.h> 
 #include <korith/tty.h> 
+#include <korith/debug.h> 
 #include <korith/idt.h> 
 #include <korith/irq.h> 
 #include <korith/cpu.h> 
 #include <korith/io.h> 
 #include <korith/timer.h> 
 
-static always_inline void kernel_init(void)
+static void kernel_init(void)
 {
     cli(); /* disable interrupts */  
     tty_init();
@@ -16,6 +16,7 @@ static always_inline void kernel_init(void)
     timer_init(); 
 }
 
+/* this simple keyboard driver is used for testing */ 
 static const char scancode_map[] =
 "\0\0331234567890-=\b"    /* 0x00–0x0E */
 "\tqwertyuiop[]\n\0"      /* 0x0F–0x1C (0x1D = Ctrl, so \0) */
@@ -32,16 +33,21 @@ struct irq_action keyboard_action = {
     .handler = keyboard_handler, 
 }; 
 
+void divide_by_zero(void)
+{
+    volatile int zero = 0; 
+    volatile int a = 1 / zero; 
+}
+
 void kernel_main(void)
 {
     kernel_init(); 
     irq_register(0x1, &keyboard_action); 
-    tty_write_string("Hello, Kernel!\n"); 
 
     while (1)
     {
         sti(); /* enable interrupts for testing */  
         cpu_halt();   /* halt the cpu */ 
     }
-    __builtin_unreachable(); 
+    __unreachable(); 
 }

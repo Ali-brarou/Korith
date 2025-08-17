@@ -6,7 +6,6 @@
 #include <korith/tty.h>
 
 extern void (*trap_entry_table[NR_TRAPS])(void); 
-extern void (*irq_entry_table[NR_IRQS])(void); 
 
 __attribute__((aligned(0x10)))
 static struct gate_desc idt_table[IDT_ENTRIES];  
@@ -23,10 +22,6 @@ void idt_init(void)
     for (i = 0; i < NR_TRAPS; i++)
     {
         idt_set_entry(i, trap_entry_table[i], 0x08, 0x8E); 
-    }
-    for (i = 0; i < NR_IRQS; i++)
-    {
-        idt_set_entry(i + IRQ0_VECTOR, irq_entry_table[i], 0x08, 0x8E); 
     }
     
     /* load idt */ 

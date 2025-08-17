@@ -1,5 +1,7 @@
 #include <korith/tty.h> 
 #include <korith/vga.h> 
+#include <korith/string.h>  
+#include <korith/sprintf.h> 
 
 size_t      tty_row;
 size_t      tty_column;
@@ -74,4 +76,21 @@ void tty_write(const char *data, size_t size)
 void tty_write_string(const char *data)
 {
     tty_write(data, strlen(data));
+}
+
+void printk(char *fmt, ...)
+{
+    va_list ap; 
+    va_start(ap, fmt); 
+    vprintk(fmt, ap); 
+    va_end(ap); 
+}
+
+void vprintk(char *fmt, va_list ap)
+{
+    char buff[256]; 
+    int size; 
+
+    size = vsnprintf(buff, sizeof buff, fmt, ap); 
+    tty_write(buff, size); 
 }

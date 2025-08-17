@@ -1,7 +1,6 @@
 #ifndef _KORITH_TYPES_H_
 #define _KORITH_TYPES_H_
 
-/* just include the gnu stddef for now */ 
 #include <stddef.h> 
 #include <stdint.h> 
 #include <stdbool.h> 
@@ -12,7 +11,18 @@ struct list_head {
 }; 
 
 struct cpu_regs {
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; 
+    uint32_t eax, ebx, ecx, edx, esi, edi, ebp;  
+    uint16_t ds, __pds; 
+    uint16_t es, __pes; 
+    uint16_t fs, __pfs; 
+    uint16_t gs, __pgs; 
+    uint32_t err_code; /* used only with faults */  
+    uint32_t eip; 
+    uint32_t cs; 
+    uint32_t flags; 
+
+    uint32_t esp; 
+    uint16_t ss, __pss; 
 }; 
 
 #endif /* _KORITH_STDDEF_H_ */

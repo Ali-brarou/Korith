@@ -1,17 +1,36 @@
 .code32
 #include <korith/irq_vectors.h> 
 
-/* put the table in text section for security in non nx old cpus*/ 
-.section .text 
+.section .rodata
 .global trap_entry_table
 .global irq_entry_table
 
 .macro SAVE_ALL 
-    pushal
+    push %gs
+    push %fs
+    push %es
+    push %ds
+    push %ebp
+    push %edi
+    push %esi
+    push %edx
+    push %ecx
+    push %ebx
+    push %eax
 .endm 
 
 .macro RESTORE_ALL 
-    popal
+    pop %eax 
+    pop %ebx 
+    pop %ecx 
+    pop %edx 
+    pop %esi 
+    pop %edi
+    pop %ebp
+    pop %ds
+    pop %es
+    pop %fs
+    pop %gs
 .endm 
 
 /* cpu exceptions */ 
@@ -19,12 +38,18 @@
 .macro BUILD_TRAP_NOERRCODE num
 trap\num: 
     push $0 /* dummy error code */ 
+    SAVE_ALL
+    mov %esp, %eax
+    push %eax
     push $\num
     jmp trap_common
 .endm
 
 .macro BUILD_TRAP_ERRCODE num 
 trap\num: 
+    SAVE_ALL
+    mov %esp, %eax
+    push %eax
     push $\num
     jmp trap_common
 .endm
@@ -63,14 +88,13 @@ BUILD_TRAP_ERRCODE   30
 BUILD_TRAP_NOERRCODE 31
 
 trap_common: 
-    SAVE_ALL
     cld
     call trap_handle 
     RESTORE_ALL
     add $8, %esp
     iret
 
-.macro insert_trap num
+.macro INSERT_TRAP num
     .long trap\num
 .endm
 
@@ -78,12 +102,16 @@ trap_common:
 trap_entry_table: 
 .set i, 0
 .rept 32
-    insert_trap %i
+    INSERT_TRAP %i
     .set i, i+1
 .endr 
 
 .macro BUILD_IRQ num
 irq\num: 
+    push $0 /* dummy error code */ 
+    SAVE_ALL
+    mov %esp, %eax
+    push %eax
     push $\num
     jmp irq_common
 .endm
@@ -91,6 +119,8 @@ irq\num:
 irq_common: 
     cld
     call irq_handle
+    add $8, %esp
+    RESTORE_ALL
     add $4, %esp
     iret 
 
@@ -100,7 +130,7 @@ irq_common:
     .set i, i+1
 .endr 
 
-.macro insert_irq num
+.macro INSERT_IRQ num
     .long irq\num
 .endm
 
@@ -108,6 +138,6 @@ irq_common:
 irq_entry_table: 
 .set i, 0
 .rept 16
-    insert_irq %i 
+    INSERT_IRQ %i 
     .set i, i+1
 .endr

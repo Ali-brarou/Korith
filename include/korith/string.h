@@ -3,8 +3,7 @@
 
 #include <korith/types.h> 
 
-size_t __strlen(const char *str); 
-#define strlen(s) __strlen(s)
+size_t strlen(const char *str); 
 
 #define memcpy(s, c, n) __builtin_memcpy(s, c, n)
 

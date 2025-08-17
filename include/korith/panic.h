@@ -3,6 +3,6 @@
 
 #include <korith/compiler.h> 
 
-noreturn void panic(char* fmt, ...); 
+__noreturn void panic(char* fmt, ...); 
 
 #endif

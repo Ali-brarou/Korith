@@ -3,7 +3,7 @@
 
 #include <korith/compiler.h> 
 
-static always_inline void cpu_halt(void) 
+static __always_inline void cpu_halt(void) 
 {
     asm volatile("hlt" ::: "memory"); 
 }; 

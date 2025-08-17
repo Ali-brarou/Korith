@@ -20,6 +20,10 @@ struct idt_ptr {
 
 void idt_init(void); 
 void idt_set_entry(uint8_t vector, void (*handler), uint16_t selector, uint8_t type_attr); 
+#define idt_set_intr_gate(vector, handler) \
+    idt_set_entry(vector, (void*)handler, 0x8, 0x8E)
+#define idt_set_trap_gate(vector, handler) \
+    idt_set_entry(vector, (void*)handler, 0x8, 0x8F)
 void default_interrupt_handler(void); 
 
 #endif

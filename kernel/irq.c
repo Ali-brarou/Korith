@@ -1,22 +1,31 @@
 #include <korith/irq.h> 
-#include <korith/assert.h> 
+#include <korith/irq_vectors.h> 
+#include <korith/idt.h> 
+#include <korith/debug.h> 
 #include <korith/list.h> 
 #include <korith/pic.h> 
 #include <korith/tty.h> 
+
+extern void (*irq_entry_table[NR_IRQS])(void);
 
 struct irq_desc irq_desc[NR_IRQS]; 
 
 void irq_init(void)
 {
-    pic_init(); 
     int i; 
+
+    pic_init(); 
     for (i = 0; i < NR_IRQS; i++)
     {
         list_head_init(&irq_desc[i].action_list); 
     }
+    for (i = 0; i < NR_IRQS; i++)
+    {
+        idt_set_intr_gate(i + IRQ0_VECTOR, irq_entry_table[i]); 
+    }
 }
 
-void irq_handle(uint32_t irq)
+void irq_handle(uint32_t irq, struct cpu_regs* regs)
 {
     /* sanity check */ 
     assert(irq < NR_IRQS); 

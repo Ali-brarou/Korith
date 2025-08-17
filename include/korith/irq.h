@@ -15,18 +15,18 @@ struct  irq_action {
     struct list_head list;
 }; 
 
-static always_inline void cli(void)
+static __always_inline void cli(void)
 {
     asm volatile("cli" ::: "memory");
 }
 
-static always_inline void sti(void)
+static __always_inline void sti(void)
 {
     asm volatile("sti" ::: "memory");
 }
 
 void irq_init(void); 
-void irq_handle(uint32_t irq); 
+void irq_handle(uint32_t irq, struct cpu_regs *regs); 
 int  irq_register(uint32_t irq, struct irq_action *action); 
 
 #endif
