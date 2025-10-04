@@ -1,4 +1,5 @@
-.code32
+#include <korith/multiboot.h>
+
 .set ALIGN_FLAG,    1<<0
 .set MEMINFO_FLAG,  1<<1
 .set FLAGS,         ALIGN_FLAG | MEMINFO_FLAG  
@@ -46,6 +47,7 @@ gdt_ptr:
     .long gdt_start            
 
 .section .text
+.code32
 .global _start
 .type _start, @function 
 _start:     
