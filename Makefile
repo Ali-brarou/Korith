@@ -11,7 +11,7 @@ LD := $(CROSS_COMPILE)ld
 QEMU := qemu-system-i386 
 
 CFLAGS := -O2 -ffreestanding -fno-stack-protector -Wall -Wextra -g $(INCLUDE_DIRS) 
-LDFLAGS := -nostdlib -T kernel.ld 
+LDFLAGS := -nostdlib -T kernel/kernel.ld 
 
 C_SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
 OBJ_FILES := $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SRCS))

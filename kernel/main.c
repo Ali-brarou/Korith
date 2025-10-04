@@ -6,6 +6,7 @@
 #include <korith/cpu.h> 
 #include <korith/io.h> 
 #include <korith/timer.h> 
+#include <korith/multiboot.h>
 
 static void kernel_init(void)
 {
@@ -37,17 +38,20 @@ void divide_by_zero(void)
 {
     volatile int zero = 0; 
     volatile int a = 1 / zero; 
+    (void)a; 
 }
 
-void kernel_main(void)
+void kernel_main(uint32_t magic, struct multiboot_info *mb_info)
 {
+    (void) magic; 
+    (void) mb_info; 
     kernel_init(); 
     irq_register(0x1, &keyboard_action); 
 
     while (1)
     {
-        sti(); /* enable interrupts for testing */  
-        cpu_halt();   /* halt the cpu */ 
+        sti();          /* enable interrupts for testing */  
+        cpu_halt();     /* halt the cpu */ 
     }
     __unreachable(); 
 }

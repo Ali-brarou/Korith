@@ -11,9 +11,9 @@ void regs_dump(struct cpu_regs *regs)
     printk("ecx: %x, edx: %x\n", regs->ecx, regs->edx); 
     printk("esi: %x, edi: %x\n", regs->esi, regs->edi); 
     printk("ebp: %x, eflags: %x\n", regs->ebp, regs->flags); 
-    printk("cs: %x, ds: %x\n", regs->cs, regs->ds); 
-    printk("es: %x, fs: %x\n", regs->es, regs->fs); 
-    printk("gs: %x, err_code: %x\n", regs->gs, regs->err_code); 
+    printk("cs:  %x, ds:  %x\n", regs->cs, regs->ds); 
+    printk("es:  %x, fs:  %x\n", regs->es, regs->fs); 
+    printk("gs:  %x, err_code: %x\n", regs->gs, regs->err_code); 
     printk("-------------------------\n"); 
 }
 #pragma GCC diagnostic pop

@@ -1,19 +1,27 @@
 #include <korith/multiboot.h>
 
-.set ALIGN_FLAG,    1<<0
-.set MEMINFO_FLAG,  1<<1
-.set FLAGS,         ALIGN_FLAG | MEMINFO_FLAG  
-.set MAGIC,         0x1BADB002  
-.set CHECKSUM,      -(MAGIC + FLAGS)
+.set MULTIBOOT_FLAGS,         MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO 
+.set MULTIBOOT_CHECKSUM,      -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_FLAGS)
 
-/* Multiboot */ 
+/* Multiboot header */ 
 .section .multiboot
 .align 16
-.long MAGIC
-.long FLAGS
-.long CHECKSUM
+.long MULTIBOOT_HEADER_MAGIC    /* Header */ 
+.long MULTIBOOT_FLAGS           /* Flags */  
+.long MULTIBOOT_CHECKSUM        /* Checksum */  
+/* Unused. Only valid if MULTIBOOT_AOUT_KLUDGE is set */ 
+.long 0
+.long 0
+.long 0
+.long 0
+.long 0 
+/* Unused. Only valid if MULTIBOOT_VIDEO_MODE is set */ 
+.long 0
+.long 0
+.long 0
+.long 0
 
-/* Manually creating a stack */ 
+/* stack */  
 .section .bss
 stack_bottom: 
 .skip 16384
@@ -63,15 +71,18 @@ _start:
     mov %ax, %gs
     mov %ax, %ss
     ljmp $0x8, $reload_cs /* setup cs */  
-reload_cs: 
 
+reload_cs: 
     /* Setup the stack */ 
     mov $stack_top, %esp 
 
+
     /* Main kernel function */ 
+    push %ebx /* push Multiboot info struct */
+    push %eax /* push Multiboot magic value */ 
     call kernel_main 
 
-    /* Enter an infinit loop */
+    /* Unreachable. Enter an infinit loop */
     cli 
 hang: 
     hlt
