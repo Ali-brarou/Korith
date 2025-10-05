@@ -10,7 +10,7 @@ LD := $(CROSS_COMPILE)ld
 
 QEMU := qemu-system-i386 
 
-CFLAGS := -O2 -ffreestanding -fno-stack-protector -Wall -Wextra -g $(INCLUDE_DIRS) 
+CFLAGS := -O2 -ffreestanding -fno-stack-protector -Wall -Wextra -Werror -g $(INCLUDE_DIRS) 
 LDFLAGS := -nostdlib -T kernel/kernel.ld 
 
 C_SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
@@ -42,7 +42,7 @@ $(BUILD_DIR)/%.o: %.S
 
 $(ISO): $(KERNEL_ELF)
 	mkdir -p $(ISO_DIR)/boot/grub
-	echo 'menuentry "korith" {\n\tmultiboot /boot/kernel.elf\n}' > $(ISO_DIR)/boot/grub/grub.cfg
+	echo 'menuentry "korith" {multiboot /boot/korith.elf}' > $(ISO_DIR)/boot/grub/grub.cfg
 	cp $(KERNEL_ELF) $(ISO_DIR)/boot/
 	grub-mkrescue -o $(ISO) $(ISO_DIR)
 

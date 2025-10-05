@@ -1,4 +1,4 @@
-#include <korith/multiboot.h>
+#include <korith/multiboot1.h>
 
 .set MULTIBOOT_FLAGS,         MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO 
 .set MULTIBOOT_CHECKSUM,      -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_FLAGS)
@@ -64,12 +64,12 @@ _start:
     lgdt gdt_ptr 
 
     /* reload segment registers */ 
-    mov $0x10, %ax 
-    mov %ax, %ds
-    mov %ax, %es
-    mov %ax, %fs
-    mov %ax, %gs
-    mov %ax, %ss
+    mov $0x10, %cx 
+    mov %cx, %ds
+    mov %cx, %es
+    mov %cx, %fs
+    mov %cx, %gs
+    mov %cx, %ss
     ljmp $0x8, $reload_cs /* setup cs */  
 
 reload_cs: 

@@ -14,7 +14,6 @@ void irq_init(void)
 {
     int i; 
 
-    pic_init(); 
     for (i = 0; i < NR_IRQS; i++)
     {
         list_head_init(&irq_desc[i].action_list); 
@@ -25,7 +24,7 @@ void irq_init(void)
     }
 }
 
-void irq_handle(uint32_t irq, struct cpu_regs* regs)
+void irq_handle(uint32_t irq, struct cpu_regs* regs __unused)
 {
     /* sanity check */ 
     assert(irq < NR_IRQS); 
