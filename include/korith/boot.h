@@ -7,6 +7,6 @@ struct boot_info {
 
 }; 
 
-void multiboot_parse(uint32_t magic, struct multiboot_info *mb_info);
+void multiboot_parse(u32 magic, struct multiboot_info *mb_info);
 
 #endif

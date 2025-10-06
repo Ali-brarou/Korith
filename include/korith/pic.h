@@ -11,7 +11,7 @@
 
 #define PIC_EOI         0x20
 
-static __always_inline void pic_send_eoi(uint8_t irq)
+static __always_inline void pic_send_eoi(u8 irq)
 {
     if (irq >= 8)
         outb(PIC_EOI, PIC_SLAVE_CMD); 

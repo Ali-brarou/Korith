@@ -5,8 +5,8 @@
 
 size_t      tty_row;
 size_t      tty_column;
-uint8_t     tty_color; 
-uint16_t    *tty_buffer = (uint16_t*)VGA_MEMORY;
+u8     tty_color; 
+u16    *tty_buffer = (u16*)VGA_MEMORY;
 
 void tty_init(void)
 {
@@ -22,12 +22,12 @@ void tty_init(void)
     }
 }
 
-void tty_set_color(uint8_t color)
+void tty_set_color(u8 color)
 {
     tty_color = color; 
 }
 
-void tty_put_entry_at(char c, uint8_t color, size_t x, size_t y)
+void tty_put_entry_at(char c, u8 color, size_t x, size_t y)
 {
     const size_t index = y * VGA_WIDTH + x;
     tty_buffer[index] = vga_entry(c, color);

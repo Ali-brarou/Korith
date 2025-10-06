@@ -8,7 +8,7 @@
 #include <korith/multiboot1.h>
 #include <korith/boot.h> 
 
-static void kernel_init(uint32_t magic, struct multiboot_info *mb_info)
+static void kernel_init(u32 magic, struct multiboot_info *mb_info)
 {
     (void)magic; 
     (void)mb_info; 
@@ -28,7 +28,7 @@ void divide_by_zero(void)
     (void)a; 
 }
 
-void kernel_main(uint32_t magic, struct multiboot_info *mb_info)
+void kernel_main(u32 magic, struct multiboot_info *mb_info)
 {
     kernel_init(magic, mb_info); 
 

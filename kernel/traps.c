@@ -3,7 +3,7 @@
 #include <korith/debug.h> 
 
 /* oh no it's a trap */ 
-void trap_handle(uint32_t trap, struct cpu_regs *regs) 
+void trap_handle(u32 trap, struct cpu_regs *regs) 
 {
     regs_dump(regs);
     panic("it's a trap %d %d", regs->err_code, trap);

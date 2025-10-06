@@ -1,4 +1,4 @@
-#include <stddef.h> 
+#include <korith/types.h> 
 #include <korith/string.h> 
 
 size_t strlen(const char *str)

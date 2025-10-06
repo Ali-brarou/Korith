@@ -29,7 +29,7 @@ int vsprintf(char *buff, const char *fmt, va_list ap)
 }
 
 /* doesnt handle sign for now */ 
-static char *number(char *p, char *end, uint64_t num, int base)
+static char *number(char *p, char *end, u64 num, int base)
 {
     char temp[66]; 
     const char* digits = "0123456789abcdef";

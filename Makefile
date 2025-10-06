@@ -58,4 +58,4 @@ debug: $(KERNEL_ELF)
 gdb: $(KERNEL_ELF)
 	gdb $(KERNEL) -x scripts/gdb_cmds.txt
 
-.PHONY : all iso clean run debug
+.PHONY : all iso clean run debug gdb

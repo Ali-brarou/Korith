@@ -5,9 +5,9 @@
 #include <korith/io.h> 
 #include <korith/tty.h> 
 
-uint32_t tick = 0; 
+u32 tick = 0; 
 
-static void timer_handler(uint32_t irq)
+static void timer_handler(u32 irq)
 {
     (void)irq; 
     tick++; 

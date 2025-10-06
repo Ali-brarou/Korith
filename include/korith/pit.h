@@ -3,6 +3,6 @@
 
 #include <korith/types.h> 
 
-void pit_init(uint32_t hz); 
+void pit_init(u32 hz); 
 
 #endif

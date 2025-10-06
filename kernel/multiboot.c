@@ -2,7 +2,7 @@
 #include <korith/boot.h>
 #include <korith/panic.h> 
 
-void multiboot_parse(uint32_t magic, struct multiboot_info *mb_info)
+void multiboot_parse(u32 magic, struct multiboot_info *mb_info)
 {
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
         panic("Invalid Multiboot magic 0x%x (expected: 0x%x)\n", 

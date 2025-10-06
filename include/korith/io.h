@@ -4,14 +4,14 @@
 #include <korith/types.h> 
 #include <korith/compiler.h> 
 
-static __always_inline uint8_t inb(uint16_t port)
+static __always_inline u8 inb(u16 port)
 {
-    uint8_t ret; 
+    u8 ret; 
     asm volatile("inb %1, %0" : "=a"(ret) : "Nd"(port) : "memory"); 
     return ret; 
 }
 
-static __always_inline void outb(uint8_t value, uint16_t port)
+static __always_inline void outb(u8 value, u16 port)
 {
     asm volatile("outb %b0, %w1" :: "a"(value), "Nd"(port) : "memory"); 
 }

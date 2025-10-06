@@ -11,7 +11,7 @@ struct irq_desc {
 }; 
 
 struct  irq_action {
-    void (*handler)(uint32_t); 
+    void (*handler)(u32); 
     struct list_head list;
 }; 
 
@@ -26,7 +26,7 @@ static __always_inline void sti(void)
 }
 
 void irq_init(void); 
-void irq_handle(uint32_t irq, struct cpu_regs *regs); 
-int  irq_register(uint32_t irq, struct irq_action *action); 
+void irq_handle(u32 irq, struct cpu_regs *regs); 
+int  irq_register(u32 irq, struct irq_action *action); 
 
 #endif

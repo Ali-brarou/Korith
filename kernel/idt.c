@@ -26,13 +26,13 @@ void idt_init(void)
     
     /* load idt */ 
     idt_descriptor.limit = sizeof(idt_table) - 1; 
-    idt_descriptor.base = (uint32_t)&idt_table; 
+    idt_descriptor.base = (u32)&idt_table; 
     lidt(&idt_descriptor); 
 }
 
-void idt_set_entry(uint8_t vector, void (*handler), uint16_t selector, uint8_t type_attr)
+void idt_set_entry(u8 vector, void (*handler), u16 selector, u8 type_attr)
 {
-    uint32_t handler_addr = (uint32_t)handler;  
+    u32 handler_addr = (u32)handler;  
 
     idt_table[vector].offset_low = handler_addr & 0xFFFF; 
     idt_table[vector].selector = selector; 

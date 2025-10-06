@@ -26,9 +26,9 @@
 #define PIT_BIN     0x00
 #define PIT_BCD     0x01
 
-void pit_init(uint32_t hz)
+void pit_init(u32 hz)
 {
-    uint32_t divisor = PIT_FREQ / hz;
+    u32 divisor = PIT_FREQ / hz;
 
     outb(PIT_CNT0 | PIT_LOHI | PIT_MODE3 | PIT_BIN, PIT_CMD);
     outb(divisor & 0xff, PIT_CH0);
