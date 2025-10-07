@@ -75,6 +75,9 @@ _start:
 reload_cs: 
     /* Setup the stack */ 
     mov $stack_top, %esp 
+    mov %cr0, %ecx
+    or %cl, 1       /* set PE (Protection Enable) bit in CR0 (Control Register 0) */ 
+    mov %ecx, %cr0 
 
 
     /* Main kernel function */ 

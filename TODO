@@ -1,0 +1,13 @@
+parse multiboot memory map  
+build a physcial page allocator
+kernel heap
+ps/2 keyboard driver
+serial (com1) console
+enable paging 
+basic process/task struct
+implement syscalls
+simple fs 
+elf loaders
+pci enumeration
+simple device drivers
+APIC / SMP support
