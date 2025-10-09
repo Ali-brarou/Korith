@@ -27,9 +27,6 @@ void irq_init(void)
 
 void irq_handle(u32 irq, struct cpu_regs* regs __unused)
 {
-    /* sanity check */ 
-    assert(irq < NR_IRQS); 
-
     struct list_head *pos;  
     list_for_each(pos, &irq_desc[irq].action_list)
     {
@@ -43,9 +40,6 @@ void irq_handle(u32 irq, struct cpu_regs* regs __unused)
 
 int irq_register(u32 irq, struct irq_action *action)
 {
-    /* sanity check */ 
-    assert(irq < NR_IRQS); 
-
     list_add_tail(&action->list, &irq_desc[irq].action_list); 
     return 0;      
 }

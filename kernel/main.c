@@ -7,11 +7,10 @@
 #include <korith/timer.h> 
 #include <korith/multiboot1.h>
 #include <korith/boot.h> 
+#include <korith/ctype.h> 
 
 static void kernel_init(u32 magic, struct multiboot_info *mb_info)
 {
-    (void)magic; 
-    (void)mb_info; 
     cli(); /* disable interrupts */  
     tty_init();
     multiboot_parse(magic, mb_info); 
@@ -24,8 +23,7 @@ static void kernel_init(u32 magic, struct multiboot_info *mb_info)
 void divide_by_zero(void)
 {
     volatile int zero = 0; 
-    volatile int a = 1 / zero; 
-    (void)a; 
+    volatile int __unused a = 1 / zero; 
 }
 
 void kernel_main(u32 magic, struct multiboot_info *mb_info)

@@ -128,10 +128,10 @@ struct multiboot_aout_symbol_table {
 
 /* The section header table for ELF. */
 struct multiboot_elf_section_header_table {
-  u32 num;
-  u32 size;
-  u32 addr;
-  u32 shndx;
+    u32 num;
+    u32 size;
+    u32 addr;
+    u32 shndx;
 };
 
 struct multiboot_info {
@@ -213,7 +213,7 @@ struct multiboot_color {
     u8 blue;
 };
 
-struct __packed multiboot_mmap_entry {
+struct multiboot_memory_map {
     u32 size;
     u64 addr;
     u64 len;
@@ -223,7 +223,7 @@ struct __packed multiboot_mmap_entry {
 #define MULTIBOOT_MEMORY_NVS                    4
 #define MULTIBOOT_MEMORY_BADRAM                 5
     u32 type;
-}; 
+} __packed; 
 
 struct multiboot_mod_list {
     /* the memory used goes from bytes ’mod_start’ to ’mod_end-1’ inclusive */

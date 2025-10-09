@@ -6,6 +6,6 @@
 static __always_inline void cpu_halt(void) 
 {
     asm volatile("hlt" ::: "memory"); 
-}; 
+}
 
 #endif 

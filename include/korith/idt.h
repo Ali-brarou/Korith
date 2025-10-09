@@ -6,18 +6,18 @@
 
 #define IDT_ENTRIES 256
 
-struct __packed gate_desc {
+struct gate_desc {
     u16    offset_low;  
     u16    selector; 
     u8     zero;  
     u8     type_attributes; 
     u16    offset_high; 
-}; 
+} __packed; 
 
-struct __packed idt_ptr {
+struct idt_ptr {
     u16 limit; 
     u32 base; 
-}; 
+} __packed; 
 
 void idt_init(void); 
 void idt_set_entry(u8 vector, void (*handler), u16 selector, u8 type_attr); 

@@ -1,16 +1,15 @@
-SRC_DIRS := lib kernel 
+SRC_DIRS := lib kernel mm
 BUILD_DIR :=  build
 INCLUDE_DIRS := -Iinclude
 
 CROSS_COMPILE := i686-elf-
 
 CC := $(CROSS_COMPILE)gcc
-AS := $(CROSS_COMPILE)as
 LD := $(CROSS_COMPILE)ld
 
 QEMU := qemu-system-i386 
 
-CFLAGS := -O2 -ffreestanding -fno-stack-protector -Wall -Wextra -Werror -g $(INCLUDE_DIRS) 
+CFLAGS := -O2 -ffreestanding -fno-stack-protector -Wall -Wextra -g $(INCLUDE_DIRS) 
 LDFLAGS := -nostdlib -T kernel/kernel.ld 
 
 C_SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))

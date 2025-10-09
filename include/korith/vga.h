@@ -1,5 +1,5 @@
-#ifndef _KORITH_VGA_
-#define _KORITH_VGA_
+#ifndef _KORITH_VGA_H_
+#define _KORITH_VGA_H_
 
 #include <korith/types.h> 
 
